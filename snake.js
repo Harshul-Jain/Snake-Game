@@ -17,20 +17,30 @@ function init(){
  			}
  		},
  		drawSnake:function(){
- 			pen.fillStyle="Blue";
+ 			pen.fillStyle=this.color;
  			for(var i=0;i<this.cells.length;i++){
  				pen.fillRect(this.cells[i].x*cs,this.cells[i].y,cs-2,cs-2);
  			}
+ 		},
+ 		updateSnake:function(){
+ 			this.cells.pop();
+ 			var headX=this.cells[0].x;
+ 			var headY=this.cells[0].y;
+ 			var X=headX+1;
+ 			var Y=headY;
+ 			this.cells.unshift({x:X,y:Y});
+
  		}
 	};
 	snake.createSnake();
 }
 function draw(){
+	pen.clearRect(0,0,W,H);
 	snake.drawSnake();
 
 }
 function update(){
-
+	snake.updateSnake();
 }
 function gameloop(){
 	draw();
