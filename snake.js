@@ -3,6 +3,8 @@ function init(){
  	W=H=canvas.width=canvas.height=1000;
  	pen=canvas.getContext('2d')
  	cs=66;
+ 	game_over=false;
+ 	var food=getRandomFood();
  	snake={
  		init_len:5,
  		color:"blue",
@@ -67,10 +69,22 @@ function init(){
 function draw(){
 	pen.clearRect(0,0,W,H);
 	snake.drawSnake();
+	pen.fillStyle=food.color;
+	pen.fillRect(food.x*cs,food.y*cs,cs-2,cs-2);
 
 }
 function update(){
 	snake.updateSnake();
+}
+function getRandomFood(){
+	var FoodX=Math.round(Math.random()*(W-cs)/cs);
+	var FoodY=Math.round(Math.random()*(H-cs)/cs);
+
+	 food={
+		x:FoodX,
+		y:FoodY,
+		color:"red",
+	};
 }
 function gameloop(){
 	draw();
