@@ -1,6 +1,6 @@
 function init(){
  	var canvas=document.getElementById('mycanvas');
- 	W=H=canvas.width=canvas.height=1000;
+ 	W=H=canvas.width=canvas.height=900;
  	pen=canvas.getContext('2d')
  	cs=66;
  	game_over=false;
@@ -25,9 +25,22 @@ function init(){
  			}
  		},
  		updateSnake:function(){
- 			this.cells.pop();
  			var headX=this.cells[0].x;
  			var headY=this.cells[0].y;
+ 			var last_x=Math.round(W/cs);
+ 			var last_y=Math.round(H/cs);
+ 			if(headX<0 || headY<0|| headX>=last_x || headY>=last_y){
+ 				game_over=true;
+ 			}
+ 			//food Eaten
+ 			if(headX==food.x && headY==food.y)
+ 			{
+ 				console.log("Food Eaten");
+ 				food=getRandomFood();
+ 			}
+ 			else{
+ 				this.cells.pop();
+ 			}
  			var nextX,nextY;
  			if(this.direction=="right"){
  				nextX=headX+1;
@@ -46,7 +59,6 @@ function init(){
  				nextY=headY-1;
  			}
  			this.cells.unshift({x:nextX,y:nextY});
-
  		}
 	};
 	snake.createSnake();
@@ -85,10 +97,17 @@ function getRandomFood(){
 		y:FoodY,
 		color:"red",
 	};
+	return food;
 }
 function gameloop(){
-	draw();
-	update();
+	if(game_over==true){
+		clearInterval(f);
+		alert("Game Over");
+	}
+	else{
+		draw();
+		update();
+	}
 }
 init();
 var f=setInterval(gameloop,100);
